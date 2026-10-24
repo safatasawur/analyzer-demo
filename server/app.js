@@ -167,8 +167,12 @@ export function createApp(config) {
 
     // Local development convenience: serve the website from the same origin.
     if (config.serveWebsite) {
-        app.use(express.static(WEBSITE_DIR, { index: "index.html", extensions: ["html"] }));
-    }
+         app.use(express.static(WEBSITE_DIR, { index: "index.html", extensions: ["html"] }));
+       } else {
+           app.get("/", (req, res) => {
+               res.json({ name: "JS Info Flow API", status: "ok", health: "/api/health" });
+           });
+       }
 
     // Error handler (body-parser errors and anything unexpected).
     // eslint-disable-next-line no-unused-vars
