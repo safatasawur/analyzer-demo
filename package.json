@@ -1,0 +1,26 @@
+{
+  "name": "js-info-flow-demo",
+  "version": "1.0.0",
+  "description": "Interactive web demo for JS Info Flow, an exploratory JavaScript static information-flow (taint) analyzer.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js",
+    "test": "node --test tests/analyzer.test.js tests/api.test.js",
+    "test:analyzer": "node --test tests/analyzer.test.js",
+    "test:api": "node --test tests/api.test.js",
+    "analyze": "node analyzer/analyzer.js"
+  },
+  "dependencies": {
+    "acorn": "8.19.0",
+    "cors": "2.8.6",
+    "express": "5.3.0",
+    "express-rate-limit": "8.7.1",
+    "helmet": "8.3.0"
+  },
+  "license": "MIT"
+}

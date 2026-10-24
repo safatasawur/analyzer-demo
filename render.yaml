@@ -1,0 +1,19 @@
+# Render Blueprint for the API. In Render: New -> Blueprint -> select this repo.
+# Then set ALLOWED_ORIGINS to your GitHub Pages origin (e.g. https://USERNAME.github.io).
+services:
+  - type: web
+    name: js-info-flow-api
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: TRUST_PROXY
+        value: "1"
+      - key: SERVE_WEBSITE
+        value: "0"

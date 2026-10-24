@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JS Info Flow</title>
+    <meta name="description" content="An exploratory static analyzer that traces sensitive data from configured sources to sinks in JavaScript. Try it in the browser.">
+    <meta name="color-scheme" content="dark">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="style.css">
+    <script src="config.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <a class="skip" href="#playground">Skip to the playground</a>
+
+    <header class="site-header">
+        <a class="brand" href="#top" aria-label="JS Info Flow home">
+            <span class="brand-mark" aria-hidden="true">⟶</span>js-info-flow
+        </a>
+        <nav aria-label="Sections">
+            <a href="#playground">playground</a>
+            <a href="#tests">tests</a>
+            <a href="#how">how it works</a>
+            <a href="#limitations">limitations</a>
+            <a href="#" id="nav-github" rel="noopener">source</a>
+        </nav>
+    </header>
+
+    <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-copy">
+                <h1 id="hero-title">JS Info Flow</h1>
+                <p class="lede">
+                    A small static analyzer that follows sensitive data, such as a password read by
+                    <code>readPassword()</code>, through variables and function calls, and reports when
+                    it reaches a sink like <code>console.log</code>. The code you submit is parsed, never run.
+                </p>
+                <p class="hint">Type <kbd>help</kbd> in the terminal, or go straight to the <a href="#playground">playground</a>.</p>
+            </div>
+
+            <div class="terminal" id="terminal" role="region" aria-label="Command terminal">
+                <div class="terminal-bar">
+                    <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                    <span class="terminal-title">visitor@js-info-flow: ~</span>
+                    <span class="api-pill" id="api-pill" data-state="checking" title="Backend status">api: checking</span>
+                </div>
+                <div class="terminal-body" id="terminal-body">
+                    <div class="terminal-log" id="terminal-log" role="log" aria-live="polite" aria-relevant="additions"></div>
+                    <form class="prompt-line" id="prompt-form" autocomplete="off">
+                        <label class="prompt" for="prompt-input"><span class="p-user">visitor</span><span class="p-at">@</span><span class="p-host">js-info-flow</span><span class="p-path">:~$</span></label>
+                        <input id="prompt-input" name="command" type="text" spellcheck="false" autocapitalize="off" aria-describedby="prompt-help" enterkeyhint="send">
+                    </form>
+                    <p id="prompt-help" class="sr-only">Type a command and press Enter. Up and down arrows browse history. Tab completes commands.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="playground" class="playground" aria-labelledby="pg-title">
+            <div class="section-head">
+                <h2 id="pg-title">Playground</h2>
+                <p>Edit the code, then analyze it. Findings come from the live backend.</p>
+            </div>
+
+            <div class="pg-grid">
+                <div class="editor-pane">
+                    <div class="toolbar">
+                        <label for="example-select" class="sr-only">Example program</label>
+                        <select id="example-select"></select>
+                        <button type="button" id="reset-btn" class="btn ghost">Reset</button>
+                        <button type="button" id="analyze-btn" class="btn primary">Analyze <span class="kbd-hint" aria-hidden="true">Ctrl ↵</span></button>
+                    </div>
+                    <p class="expectation" id="expectation"></p>
+                    <div class="editor" id="editor">
+                        <div class="gutter" id="gutter" aria-hidden="true"></div>
+                        <label for="code" class="sr-only">JavaScript source</label>
+                        <textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" aria-describedby="editor-help"></textarea>
+                    </div>
+                    <p id="editor-help" class="fine">
+                        <kbd>Ctrl</kbd>+<kbd>Enter</kbd> analyzes. <kbd>Tab</kbd> indents; press <kbd>Esc</kbd> first to move focus out with <kbd>Tab</kbd>.
+                        <span id="char-count"></span>
+                    </p>
+                </div>
+
+                <div class="results-pane" id="results" aria-live="polite" aria-busy="false" tabindex="-1">
+                    <div class="results-empty">
+                        <p class="r-title">No analysis yet</p>
+                        <p>Pick an example or write your own, then press Analyze.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tests" class="tests" aria-labelledby="tests-title">
+            <div class="section-head">
+                <h2 id="tests-title">Documented test cases</h2>
+                <p>
+                    These are the hand-written cases from <code>tests/test-cases.md</code>. Pressing the button runs each
+                    one through the analyzer on the server right now and compares the reported sinks with what the document expects.
+                </p>
+            </div>
+            <div class="tests-actions">
+                <button type="button" class="btn primary" id="run-tests-btn">Run documented cases</button>
+                <span id="tests-meta" class="fine"></span>
+            </div>
+            <div class="table-wrap">
+                <table id="tests-table">
+                    <thead>
+                        <tr><th scope="col">#</th><th scope="col">Case</th><th scope="col">Expected</th><th scope="col">Observed</th><th scope="col">Status</th></tr>
+                    </thead>
+                    <tbody id="tests-body">
+                        <tr><td colspan="5" class="muted">Not run yet.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="fine">
+                The repository also has an automated suite (<code>npm test</code>) covering the analyzer and the API separately.
+                Those results come from running it locally or in CI, not from this page.
+            </p>
+        </section>
+
+        <section id="how" class="how" aria-labelledby="how-title">
+            <div class="section-head">
+                <h2 id="how-title">How it works</h2>
+            </div>
+            <ol class="flow">
+                <li><span class="f-step">parse</span><p>Acorn turns the source into an abstract syntax tree. Nothing is executed.</p></li>
+                <li><span class="f-step">register</span><p>Top-level <code>function</code> declarations are collected so their bodies can be analyzed per call.</p></li>
+                <li><span class="f-step">track</span><p>Top-level statements are walked in order. A variable becomes tainted when its declaration contains a source call or another tainted value.</p></li>
+                <li><span class="f-step">follow calls</span><p>For calls to known functions, tainted arguments mark parameters, local declarations propagate, and the first top-level <code>return</code> decides whether the result is tainted.</p></li>
+                <li><span class="f-step">report</span><p>Any call to a configured sink with a tainted argument becomes a finding, recorded once per sink and line.</p></li>
+            </ol>
+            <div class="config-lists">
+                <div><h3>Sources</h3><ul id="sources-list" class="chips"><li class="muted">loading</li></ul></div>
+                <div><h3>Sinks</h3><ul id="sinks-list" class="chips"><li class="muted">loading</li></ul></div>
+            </div>
+        </section>
+
+        <section id="limitations" class="limitations" aria-labelledby="lim-title">
+            <div class="section-head">
+                <h2 id="lim-title">Limitations</h2>
+                <p>This is an exploratory prototype, not a production security tool. Known gaps, all reproducible in the playground:</p>
+            </div>
+            <ul class="lim-list" id="lim-list"></ul>
+            <p class="callout">
+                A finding means a potential flow under these rules, not a confirmed vulnerability.
+                No findings does not mean the code is safe.
+            </p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>JS Info Flow is an exploratory prototype by Mojiz Zaidi. Submitted code is analyzed in memory and not stored or logged.</p>
+        <p class="fine" id="footer-api"></p>
+    </footer>
+</body>
+</html>
