@@ -1,12 +1,13 @@
-// Site configuration. Edit before deploying to GitHub Pages.
+// Site configuration.
 //
 // API_BASE_URL
-//   ""  -> same origin (local development: `npm start` serves this site and the API together)
-//   "https://your-api.onrender.com" -> deployed backend (no trailing slash)
+//   ""  -> same origin (the website and API are served by the same server)
+//   "https://your-api.onrender.com" -> separate backend (no trailing slash)
 //
-// GITHUB_URL
-//   The public repository for this project. Leave "" until it exists.
+// GITHUB_URL     The analyzer repository (opened by the `github` command and the "source" link).
+// DEMO_REPO_URL  The repository for this website and API (opened by `github demo`).
 window.JSIF_CONFIG = {
     API_BASE_URL: "",
-    GITHUB_URL: "https://github.com/safatasawur/analyzer-demo"
+    GITHUB_URL: "https://github.com/safatasawur/js-flow-analyzer",
+    DEMO_REPO_URL: "https://github.com/safatasawur/analyzer-demo"
 };

@@ -7,6 +7,7 @@
     const CFG = window.JSIF_CONFIG || {};
     const API_BASE = (CFG.API_BASE_URL || "").replace(/\/+$/, "");
     const GITHUB_URL = CFG.GITHUB_URL || "";
+    const DEMO_REPO_URL = CFG.DEMO_REPO_URL || "";
     const ON_STATIC_HOST = /\.github\.io$/i.test(location.hostname) || location.protocol === "file:";
     const API_CONFIGURED = Boolean(API_BASE) || !ON_STATIC_HOST;
     const REQUEST_TIMEOUT_MS = 70_000; // free hosts can take ~60 s to wake up
@@ -613,14 +614,24 @@ sendToServer(token);
             }
         },
         github: {
-            desc: "open the source repository",
-            run() {
-                if (!GITHUB_URL) {
-                    print(out("The repository link has not been configured yet (GITHUB_URL in website/config.js).", "t-warn"));
+            usage: "github [demo]",
+            desc: "open the analyzer repository (demo: this website's code)",
+            run(args) {
+                const wantDemo = (args[0] || "").toLowerCase() === "demo";
+                const url = wantDemo ? DEMO_REPO_URL : GITHUB_URL;
+                if (!url) {
+                    print(out("The repository link has not been configured yet (website/config.js).", "t-warn"));
                     return;
                 }
-                print(out(`opening ${GITHUB_URL}`, "t-dim"));
-                window.open(GITHUB_URL, "_blank", "noopener");
+                print(out(`opening ${url} in a new tab`, "t-dim"));
+                const tab = window.open(url, "_blank", "noopener,noreferrer");
+                // window.open returns null with noopener, so offer a link in case a popup blocker interfered.
+                print(el("div", { class: "entry t-out" }, "If nothing opened, click: ",
+                    el("a", { href: url, target: "_blank", rel: "noopener noreferrer", text: url })));
+                if (!wantDemo && DEMO_REPO_URL) {
+                    print(out('The website and API code is in a separate repo: type "github demo".', "t-dim"));
+                }
+                return tab;
             }
         },
         clear: {
@@ -808,9 +819,16 @@ sendToServer(token);
     // Boot
     // ------------------------------------------------------------------
     const navGithub = $("#nav-github");
+    for (const [id, url] of [["#footer-analyzer-repo", GITHUB_URL], ["#footer-demo-repo", DEMO_REPO_URL]]) {
+        const link = $(id);
+        if (!link) continue;
+        if (url) link.href = url;
+        else link.remove();
+    }
     if (GITHUB_URL) {
         navGithub.href = GITHUB_URL;
         navGithub.target = "_blank";
+        navGithub.rel = "noopener noreferrer";
     } else {
         navGithub.addEventListener("click", e => {
             e.preventDefault();

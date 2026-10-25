@@ -318,6 +318,7 @@ td button.link { font: inherit; color: var(--cyan); background: none; border: 0;
 
 .site-footer { border-top: 1px solid var(--rule); padding: 24px max(var(--gutter), calc((100% - var(--max)) / 2)); color: var(--muted); font-size: var(--step--1); }
 .site-footer p { margin: 0 0 4px; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 8px 0 !important; }
 
 @media (max-width: 860px) {
     .pg-grid { grid-template-columns: minmax(0, 1fr); }
