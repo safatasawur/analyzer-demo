@@ -93,6 +93,32 @@ h3 { font-size: var(--step-0); color: var(--muted); font-weight: 500; margin-bot
 .lede { font-size: var(--step-1); line-height: 1.55; margin: 14px 0 10px; }
 .hint { color: var(--muted); margin: 0; }
 
+/* How to try it */
+.howto { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--panel); padding: 16px 18px; }
+.howto-title { font-size: var(--step-0); color: var(--text); margin-bottom: 12px; }
+.howto-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.howto-steps li { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; }
+.howto-n {
+    font: 600 var(--step-0)/1 var(--mono);
+    color: var(--ink); background: var(--cyan);
+    width: 1.9rem; height: 1.9rem; border-radius: 50%;
+    display: grid; place-items: center;
+}
+.howto-head { font: 600 var(--step-0)/1.4 var(--mono); margin: 2px 0 4px; }
+.howto-steps p { margin: 0; font-size: 0.9rem; }
+.howto-steps p + p { color: var(--muted); }
+
+/* Quick command buttons under the terminal */
+.quick { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 12px; border-top: 1px solid var(--rule); background: var(--panel); }
+.quick-label { color: var(--muted); font-size: var(--step--1); margin-right: 4px; }
+.quick-btn {
+    font: 500 var(--step--1)/1 var(--mono);
+    color: var(--cyan); background: transparent;
+    border: 1px solid var(--cyan-dim); border-radius: var(--radius-sm);
+    padding: 7px 10px; cursor: pointer;
+}
+.quick-btn:hover { background: rgba(92, 208, 216, 0.1); border-color: var(--cyan); }
+
 /* Terminal */
 .terminal {
     background: #0b1016;
@@ -295,6 +321,7 @@ td button.link { font: inherit; color: var(--cyan); background: none; border: 0;
 
 @media (max-width: 860px) {
     .pg-grid { grid-template-columns: minmax(0, 1fr); }
+    .howto-steps { grid-template-columns: minmax(0, 1fr); gap: 14px; }
     .results-pane { min-height: 0; }
 }
 @media (max-width: 600px) {

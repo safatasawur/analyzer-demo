@@ -8,5 +8,5 @@
 //   The public repository for this project. Leave "" until it exists.
 window.JSIF_CONFIG = {
     API_BASE_URL: "",
-    GITHUB_URL: ""
+    GITHUB_URL: "https://github.com/safatasawur/analyzer-demo"
 };

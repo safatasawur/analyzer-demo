@@ -34,11 +34,37 @@
             <div class="hero-copy">
                 <h1 id="hero-title">JS Info Flow</h1>
                 <p class="lede">
-                    A small static analyzer that follows sensitive data, such as a password read by
-                    <code>readPassword()</code>, through variables and function calls, and reports when
-                    it reaches a sink like <code>console.log</code>. The code you submit is parsed, never run.
+                    A small static analyzer that checks JavaScript for sensitive data leaks. It follows a value
+                    like a password from <code>readPassword()</code> through variables and function calls, and
+                    reports when it reaches an output like <code>console.log</code>. Your code is only read, never run.
                 </p>
-                <p class="hint">Type <kbd>help</kbd> in the terminal, or go straight to the <a href="#playground">playground</a>.</p>
+            </div>
+
+            <div class="howto" aria-labelledby="howto-title">
+                <h2 id="howto-title" class="howto-title">How to try it</h2>
+                <ol class="howto-steps">
+                    <li>
+                        <span class="howto-n" aria-hidden="true">1</span>
+                        <div>
+                            <p class="howto-head">Use the terminal</p>
+                            <p>Click inside the terminal below, type <kbd>help</kbd> and press <kbd>Enter</kbd> to see every command. Or click one of the buttons under it.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="howto-n" aria-hidden="true">2</span>
+                        <div>
+                            <p class="howto-head">Run a demo</p>
+                            <p>Type <kbd>demo</kbd> to send an example program to the analyzer and see what it finds.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="howto-n" aria-hidden="true">3</span>
+                        <div>
+                            <p class="howto-head">Test your own code</p>
+                            <p>Go to the <a href="#playground">playground</a>, pick an example or write your own, and press <b>Analyze</b>.</p>
+                        </div>
+                    </li>
+                </ol>
             </div>
 
             <div class="terminal" id="terminal" role="region" aria-label="Command terminal">
@@ -55,13 +81,28 @@
                     </form>
                     <p id="prompt-help" class="sr-only">Type a command and press Enter. Up and down arrows browse history. Tab completes commands.</p>
                 </div>
+                <div class="quick" role="group" aria-label="Quick commands">
+                    <span class="quick-label">Try:</span>
+                    <button type="button" class="quick-btn" data-cmd="help">help</button>
+                    <button type="button" class="quick-btn" data-cmd="demo">demo</button>
+                    <button type="button" class="quick-btn" data-cmd="demo c">demo c</button>
+                    <button type="button" class="quick-btn" data-cmd="examples">examples</button>
+                    <button type="button" class="quick-btn" data-cmd="tests">tests</button>
+                    <button type="button" class="quick-btn" data-cmd="limitations">limitations</button>
+                    <button type="button" class="quick-btn" data-cmd="analyze">analyze</button>
+                </div>
             </div>
         </section>
 
         <section id="playground" class="playground" aria-labelledby="pg-title">
             <div class="section-head">
                 <h2 id="pg-title">Playground</h2>
-                <p>Edit the code, then analyze it. Findings come from the live backend.</p>
+                <p>
+                    Choose an example from the menu or type your own JavaScript, then press <b>Analyze</b>
+                    (or <kbd>Ctrl</kbd>+<kbd>Enter</kbd>). Results appear on the right and come from the live analyzer.
+                    Sensitive sources: <code>readPassword()</code>, <code>getUserToken()</code>, <code>getSensitiveData()</code>.
+                    Outputs it watches: <code>console.log</code>, <code>sendToServer</code>.
+                </p>
             </div>
 
             <div class="pg-grid">
@@ -86,8 +127,8 @@
 
                 <div class="results-pane" id="results" aria-live="polite" aria-busy="false" tabindex="-1">
                     <div class="results-empty">
-                        <p class="r-title">No analysis yet</p>
-                        <p>Pick an example or write your own, then press Analyze.</p>
+                        <p class="r-title">Results will appear here</p>
+                        <p>Press <b>Analyze</b> to check the code on the left. Try example A first: it should report one leak to <code>console.log</code>.</p>
                     </div>
                 </div>
             </div>

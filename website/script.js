@@ -274,8 +274,8 @@ sendToServer(token);
     function resetResults() {
         lastAnalyzedCode = null;
         resultsEl.replaceChildren(el("div", { class: "results-empty" },
-            el("p", { class: "r-title", text: "No analysis yet" }),
-            el("p", { text: "Pick an example or write your own, then press Analyze." })));
+            el("p", { class: "r-title", text: "Results will appear here" }),
+            el("p", { text: "Press Analyze to check the code on the left." })));
     }
 
     function markStale() {
@@ -701,6 +701,13 @@ sendToServer(token);
         }
     });
 
+    document.querySelectorAll(".quick-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            if (input.disabled) return;
+            execute(btn.dataset.cmd);
+        });
+    });
+
     termBody.addEventListener("click", () => {
         if (!window.getSelection()?.toString()) input.focus({ preventScroll: true });
     });
@@ -814,9 +821,13 @@ sendToServer(token);
 
     loadExample("a");
     print(
-        out("JS Info Flow web demo v1.0.0", "t-accent"),
-        out("A command interface for this site. It is not a system shell."),
-        out('Type "help" to see commands, or "demo" to analyze an example on the live backend.', "t-dim"));
+        out("Welcome to JS Info Flow, a JavaScript data-leak analyzer.", "t-accent"),
+        out("This terminal controls the website. It is not a real system shell."),
+        block(
+            row("  help", "see every command"),
+            row("  demo", "analyze an example program"),
+            row("  analyze", "jump to the playground to test your own code")),
+        out("Type a command below and press Enter, or click a button under the terminal.", "t-dim"));
     checkHealth();
     input.focus({ preventScroll: true });
 })();
